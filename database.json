@@ -1,9 +1,16 @@
 {
-  "users": [],
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "$2a$10$QmK9y0F4pN2wC8Q8mP1YLeA7Z1zZyNqJ8mGZJtN0d3M3Zk5O5tZC",
+      "role": "admin"
+    }
+  ],
   "services": [
-    { "id": 1, "name": "Instagram Followers (1000)", "price": 300 },
-    { "id": 2, "name": "Instagram Likes (1000)", "price": 200 },
-    { "id": 3, "name": "TikTok Followers (1000)", "price": 300 }
+    { "id": 1, "name": "Instagram Followers (1000)", "price": 500 },
+    { "id": 2, "name": "Instagram Likes (1000)", "price": 300 },
+    { "id": 3, "name": "TikTok Followers (1000)", "price": 600 }
   ],
   "orders": []
 }

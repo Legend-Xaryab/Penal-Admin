@@ -1,3 +1,4 @@
+<h2>Login</h2>
 <input id="u" placeholder="Username">
 <input id="p" type="password" placeholder="Password">
 <button onclick="login()">Login</button>
@@ -6,9 +7,11 @@
 function login(){
  fetch("/api/login",{
   method:"POST",
-  headers:{"Content-Type":"application/json"},
-  body:JSON.stringify({username:u.value,password:p.value})
- }).then(r=>r.json()).then(d=>{
+  headers:{ "Content-Type":"application/json" },
+  body:JSON.stringify({ username:u.value, password:p.value })
+ })
+ .then(r=>r.json())
+ .then(d=>{
   location.href = d.role==="admin" ? "admin.html" : "index.html";
  });
 }

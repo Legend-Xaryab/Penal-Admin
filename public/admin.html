@@ -1,0 +1,17 @@
+<h2>Admin Orders</h2>
+<div id="orders"></div>
+
+<script>
+fetch("/api/admin/orders")
+.then(r=>r.json())
+.then(d=>{
+ orders.innerHTML = d.map(o=>`
+  <div class="card">
+   <b>${o.user}</b><br>
+   ${o.services.join(", ")}<br>
+   Rs ${o.total}<br>
+   ${o.status}<br>
+   ${o.date}
+  </div>`).join("");
+});
+</script>

@@ -1,0 +1,14 @@
+<h2>Signup</h2>
+<input id="u" placeholder="Username">
+<input id="p" type="password" placeholder="Password">
+<button onclick="signup()">Create Account</button>
+
+<script>
+function signup(){
+ fetch("/api/signup",{
+  method:"POST",
+  headers:{ "Content-Type":"application/json" },
+  body:JSON.stringify({ username:u.value, password:p.value })
+ }).then(()=>location.href="login.html");
+}
+</script>

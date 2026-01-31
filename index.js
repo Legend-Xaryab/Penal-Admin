@@ -12,6 +12,7 @@ const DB = "database.json";
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+
 app.use(session({
   secret: "henrix-secret",
   resave: false,
@@ -43,8 +44,9 @@ app.post("/api/login", async (req, res) => {
   const db = readDB();
   const user = db.users.find(u => u.username === req.body.username);
 
-  if (!user || !(await bcrypt.compare(req.body.password, user.password)))
+  if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
     return res.status(401).json({ error: "Invalid login" });
+  }
 
   req.session.user = user;
   res.json({ role: user.role });
@@ -55,32 +57,33 @@ app.get("/api/services", (req, res) => {
   res.json(readDB().services);
 });
 
-/* ORDER + PAYMENT */
+/* ORDER */
 app.post("/api/order", upload.single("proof"), (req, res) => {
+  if (!req.session.user) return res.status(401).end();
+
   const db = readDB();
 
-  const order = {
+  db.orders.push({
     id: Date.now(),
     user: req.session.user.username,
     services: JSON.parse(req.body.services),
     total: req.body.total,
     proof: req.file.filename,
-    status: "Pending"
-  };
+    status: "Pending",
+    date: new Date().toLocaleString()
+  });
 
-  db.orders.push(order);
   writeDB(db);
 
-  const wa = "923XXXXXXXXX";
+  const whatsapp = "923XXXXXXXXX"; // YOUR NUMBER
   res.json({
-    whatsapp: `https://wa.me/${wa}?text=New Order from ${order.user}`
+    whatsapp: `https://wa.me/${whatsapp}?text=New Order from ${req.session.user.username}`
   });
 });
 
 /* ADMIN */
 app.get("/api/admin/orders", (req, res) => {
-  const db = readDB();
-  res.json(db.orders);
+  res.json(readDB().orders);
 });
 
-app.listen(PORT, () => console.log("Panel running on " + PORT));
+app.listen(PORT, () => console.log("Henrix Panel running on port " + PORT));
